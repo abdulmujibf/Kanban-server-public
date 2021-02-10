@@ -9,7 +9,7 @@ class ControllerUser {
         let password = req.body.password || ''
         User.create({fullName, email, password})
         .then(data => {
-            res.status(201).json(data)
+            res.status(201).json({id: data.id, fullName, email})
         })
         .catch(err => { 
             next(err)
@@ -42,7 +42,6 @@ class ControllerUser {
             }
         })
         .catch(err => {
-            console.log(err)
             next(err)
         })
     }

@@ -8,6 +8,7 @@ router.use(authenticate)
 router.get('/', ControllerKanban.getAll)
 router.post('/', ControllerKanban.addKanban)
 
+router.get('/:id', authorize, ControllerKanban.getById)
 router.patch('/:id', authorize, ControllerKanban.UpdateKanban)
 router.delete('/:id', authorize, ControllerKanban.deleteKanban)
 

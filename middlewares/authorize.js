@@ -5,13 +5,22 @@ function authorize(req, res, next){
     let UserId = req.decoded.id
     Kanban.findOne({where: {id}})
     .then(kanban => {
-        if(kanban.UserId === UserId){
-            next()
+        if(kanban){
+            if(kanban.UserId === UserId){
+                console.log('masuk')
+                next()
+            }else{
+                throw {
+                    name: 'customError',
+                    status: 401,
+                    message: 'Not Authorize'
+                }
+            }
         }else{
             throw {
                 name: 'customError',
-                status: 401,
-                message: 'Not Authorize'
+                status: 404,
+                message: 'Not Found'
             }
         }
     })
