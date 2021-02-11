@@ -1,9 +1,10 @@
-const {Kanban} = require('../models/index')
+const {Kanban, User} = require('../models/index')
 
 class ControllerKanban {
     static getAll(req, res, next){
         Kanban.findAll({
-            order: [["updatedAt", 'ASC']]
+            order: [["updatedAt", 'ASC']],
+            include: [User]
         })
         .then(kanbans => {
             res.status(200).json(kanbans)
