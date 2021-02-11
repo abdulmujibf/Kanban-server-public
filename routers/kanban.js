@@ -9,6 +9,7 @@ router.get('/', ControllerKanban.getAll)
 router.post('/', ControllerKanban.addKanban)
 
 router.get('/:id', authorize, ControllerKanban.getById)
+router.put('/:id', authorize, ControllerKanban.editKanban)
 router.patch('/:id', authorize, ControllerKanban.UpdateKanban)
 router.delete('/:id', authorize, ControllerKanban.deleteKanban)
 

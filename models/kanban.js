@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
     category: {
       type: DataTypes.STRING,
       validate: {
+        isIn: {
+          args: [['backlog', 'todo', 'doing', 'done']],
+          msg: 'Invalid Category'
+        },
         notEmpty: {
           args: true,
           msg: 'Category Cannot be Empty'

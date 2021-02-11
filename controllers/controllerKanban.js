@@ -2,7 +2,9 @@ const {Kanban} = require('../models/index')
 
 class ControllerKanban {
     static getAll(req, res, next){
-        Kanban.findAll()
+        Kanban.findAll({
+            order: [["updatedAt", 'ASC']]
+        })
         .then(kanbans => {
             res.status(200).json(kanbans)
         })
@@ -10,6 +12,7 @@ class ControllerKanban {
             next(err)
         })
     }
+    
     static addKanban(req, res, next){
         let UserId = req.decoded.id
         let title = req.body.title || ''
@@ -35,6 +38,20 @@ class ControllerKanban {
         })
     }
 
+    static editKanban(req, res, next){
+        let id = +req.params.id
+        let title = req.body.title || ''
+        let description = req.body.description || ''
+        let category = req.body.category || ''
+        Kanban.update({title, description, category}, {where: {id}, returning: true})
+        .then(kanban => {
+            res.status(200).json(kanban[1])
+        })
+        .catch(err => {
+            next(err)
+        })
+    }
+
     static UpdateKanban(req, res, next){
         let id = +req.params.id
         let category = req.body.category || ''
@@ -46,6 +63,7 @@ class ControllerKanban {
             next(err)
         })
     }
+
     static deleteKanban(req, res, next){
         let id = +req.params.id
         Kanban.destroy({where: {id}})

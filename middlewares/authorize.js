@@ -7,7 +7,6 @@ function authorize(req, res, next){
     .then(kanban => {
         if(kanban){
             if(kanban.UserId === UserId){
-                console.log('masuk')
                 next()
             }else{
                 throw {

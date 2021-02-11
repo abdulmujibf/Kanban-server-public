@@ -13,14 +13,11 @@ function authenticate(req, res, next){
             }else{
                 throw {
                     name: 'customError',
-                    status: 400,
+                    status: 401,
                     message: 'Not Authenticate'
                 }
             }
         })
-        // .catch(err => {
-        //     next(err)
-        // })
     }
     catch(err){
         next(err)
