@@ -1,6 +1,7 @@
 const {User} = require('../models')
 const {comparePass} = require('../helpers/bcrypt')
 const {generateToken} = require('../helpers/jwt')
+const {OAuth2Client} = require('google-auth-library');
 
 class ControllerUser {
     static register(req, res, next){
@@ -40,6 +41,38 @@ class ControllerUser {
                     message: 'Email / Password is Invalid'
                 }
             }
+        })
+        .catch(err => {
+            next(err)
+        })
+    }
+
+    static googleLogin(req, res, next){
+        let {idToken} = req.body
+        const client = new OAuth2Client(process.env.CLIENT_ID)
+        let email = ''
+        let googleUser
+        client.verifyIdToken({
+            idToken,
+            audience: process.env.CLIENT_ID
+        })
+        .then(ticket => {
+            const payload = ticket.getPayload()
+            googleUser = payload
+            email = payload.email
+            return User.findOne({where: {email}}) 
+        })
+        .then(user => {
+            if(user){
+                const access_token = generateToken({id: user.id, email})
+                res.status(200).json({id: user.id, fullName: user.fullName, email: user.email, access_token})
+            }else{
+                return User.create({fullName: googleUser.name, email, password: 'nobodyknows'})
+            }
+        })
+        .then(newUser => {
+            const access_token = generateToken({id: newUser.id, email})
+            res.status(201).json({id: newUser.id, fullName: newUser.fullName, email: newUser.email, access_token})
         })
         .catch(err => {
             next(err)
