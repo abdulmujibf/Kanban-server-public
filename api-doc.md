@@ -64,6 +64,68 @@
 
 ***
 
+**Login**
+----
+  Login User.
+
+* **URL**
+
+  /users/login
+
+* **Method:**
+
+  `POST`
+
+* **Request Headers**
+
+  * None
+
+* **Request Params**
+
+  * None
+
+* **Request Body**
+
+  * Email: <E.g: johndoe@mail.com>
+  * Password: <E.g: johndoe>
+
+* **Success Response:**
+
+* **Code:** 200 Created<br />
+  **Content:** <br />
+  ```
+  {
+    "id": 1,
+    "fullName": "mujib",
+    "email": "mujib@mail.com",
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9 eyJpZCI6MSwiZW1haWwiOiJtdWppYkBtYWlsLmNvbSIsImlhdCI6MTYxMzE1MDUwOH0.j0WnusEGkMprO76MOaqVbRIazmMyNLJBH5RuYSjkCqI"
+  }
+  ```
+
+* **Error Response:**
+
+* **Code:** 400 Bad Request<br />
+  **Content:** <br />
+  ```
+  {
+      "message": [
+          "Email Cannot be Empty",
+          "Email Is Invalid",
+          "Password Cannot be Empty",
+      ]
+  }
+  ```
+
+  Or
+
+* **Code:** 500 INTERNAL SERVER ERROR<br />
+  **Content:** <br />
+  ```
+  {message: 'Internal Server Error'}
+  ```
+
+***
+
 **Show ALL Kanbans**
 ----
   Returns All Kanban lists.
@@ -121,6 +183,72 @@
     ```
     {message: 'Internal Server Error'}
     ```
+
+***
+
+**Get Kanban By Id**
+----
+  Return Kanban By Id.
+
+* **URL**
+
+  /kanbans/:id
+
+* **Method:**
+
+  `GET`
+
+* **Request Headers**
+
+  * access_token
+
+* **Request Params**
+
+  * id: <E.g: 1>
+
+* **Request Body**
+
+  * None
+
+* **Success Response:**
+
+* **Code:** 200 OK<br />
+  **Content:** <br />
+  ```
+  {
+    "id": 1,
+    "title": "Bikin Kanban",
+    "description": "Bikin Layout Dulu",
+    "category": "backlog",
+    "UserId": 1,
+    "createdAt": "2021-02-09T13:47:55.954Z",
+    "updatedAt": "2021-02-09T13:47:55.954Z"
+  }
+  ```
+
+* **Error Response:**
+
+* **Code:** 401 Not Authorized<br />
+  **Content:** <br />
+  ```
+  {message: 'Not Authenticate'}
+  ```
+  
+  Or
+
+  * **Code:** 404 Not Found<br />
+  **Content:** <br />
+  ```
+  {message: 'Not Found'}
+  ```
+
+  Or
+
+* **Code:** 500 INTERNAL SERVER ERROR<br />
+  **Content:** <br />
+  ```
+  {message: 'Internal Server Error'}
+  ```
 
 ***
 
@@ -239,6 +367,8 @@
     ```
     {
         "message": [
+            "Title Cannot be Empty",
+            "Description Cannot be Empty",
             "Category Cannot be Empty"
         ]
     }
@@ -261,6 +391,82 @@
     ```
     {message: 'Internal Server Error'}
     ```
+***
+
+**Edit Kanban**
+----
+  Edit Kanban.
+
+* **URL**
+
+  /kanbans/:id
+
+* **Method:**
+
+  `PUT`
+
+* **Request Headers**
+
+  * access_token
+
+* **Request Params**
+
+  * id: <e.g: 1>
+
+*  **Request Body**
+
+    * Title: <e.g: Bikin Kanban Server>
+    * Description: <e.g: Bikin Layout Dulu>
+    * Category: <e.g: backlog>
+
+* **Success Response:**
+
+* **Code:** 200 OK<br />
+  **Content:** <br />
+  ```
+  [
+      {
+          "id": 1,
+          "title": "Bikin Kanban Server",
+          "description": "Bikin Layout Dulu",
+          "category": "backlog",
+          "UserId": 1,
+          "createdAt": "2021-02-09T13:47:55.954Z",
+          "updatedAt": "2021-02-09T13:47:55.954Z"
+      }
+  ]
+  ```
+
+* **Error Response:**
+
+* **Code:** 400 Bad Request<br />
+  **Content:** <br />
+  ```
+  {
+      "message": [
+          "Category Cannot be Empty"
+      ]
+  }
+  ```
+
+  Or
+
+* **Code:** 401 Not Authorize<br />
+  **Content:** <br />
+  ```
+  {
+      "message": "Not Authorize"
+  }
+  ```
+
+  Or
+
+* **Code:** 500 INTERNAL SERVER ERROR<br />
+  **Content:** <br />
+  ```
+  {message: 'Internal Server Error'}
+  ```
+
 
 ***
 
